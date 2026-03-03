@@ -29,12 +29,12 @@ public class BookService {
 
     public List<BookDTO> getAllBooks() {
         List<Book> books = bookRepo.findAll();
-        List<BookDTO> bookDtos = new ArrayList<>();
+        List<BookDTO> bookDTOs = new ArrayList<>();
         for (Book book : books) {
-            BookDTO bookDto = bookToDTO(book);
-            bookDtos.add(bookDto);
+            BookDTO bookDTO = bookToDTO(book);
+            bookDTOs.add(bookDTO);
         }
-        return bookDtos;
+        return bookDTOs;
     }
 
     public BookDTO getOneBook(Long id) {
