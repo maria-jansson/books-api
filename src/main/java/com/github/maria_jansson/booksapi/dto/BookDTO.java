@@ -1,11 +1,13 @@
 package com.github.maria_jansson.booksapi.dto;
 
+import java.util.List;
+
 public record BookDTO(
         Long id,
         String title,
-        AuthorDTO author,
+        List<AuthorDTO> authors,
         String description,
-        CategoryDTO category,
+        List<CategoryDTO> categories,
         String publisher,
         Double price,
         String publishMonth,
