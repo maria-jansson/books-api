@@ -15,4 +15,18 @@ public class GlobalExceptionHandler {
         ErrorResponse error = new ErrorResponse(404, exception.getMessage(), timestamp);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
+
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException exception) {
+        LocalDateTime timestamp = LocalDateTime.now();
+        ErrorResponse error = new ErrorResponse(409, exception.getMessage(), timestamp);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(InvalidCredentialsException exception) {
+        LocalDateTime timestamp = LocalDateTime.now();
+        ErrorResponse error = new ErrorResponse(401, exception.getMessage(), timestamp);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
 }

@@ -12,6 +12,8 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.hateoas.Link;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +55,16 @@ public class AuthorController {
             authorModels.add(model);
         }
 
+        // Build self link from actual request URL to avoid HATEOAS generating a URL template
+        String selfLink = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .toUriString();
+
         CollectionModel<EntityModel<AuthorDTO>> collectionModel = CollectionModel.of(
-                authorModels,linkTo(methodOn(AuthorController.class).getAllAuthors(authorName, pageable)).withSelfRel());
+            authorModels,
+            Link.of(selfLink).withSelfRel()
+        );
+
         PageMetadata pageMetadata = new PageMetadata(
             authors.getNumber(),
             authors.getSize(),
@@ -76,8 +86,16 @@ public class AuthorController {
             bookModels.add(model);
         }
 
+        // Build self link from actual request URL to avoid HATEOAS generating a URL template
+        String selfLink = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .toUriString();
+
         CollectionModel<EntityModel<BookDTO>> collectionModel = CollectionModel.of(
-                bookModels,linkTo(methodOn(AuthorController.class).getAllBooksByAuthor(id, pageable)).withSelfRel());
+            bookModels,
+            Link.of(selfLink).withSelfRel()
+        );
+
         PageMetadata pageMetadata = new PageMetadata(
                 books.getNumber(),
                 books.getSize(),

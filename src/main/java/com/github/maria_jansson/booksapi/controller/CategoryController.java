@@ -10,8 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.hateoas.Link;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,16 @@ public class CategoryController {
             categoryModels.add(model);
         }
 
+        // Build self link from actual request URL to avoid HATEOAS generating a URL template
+        String selfLink = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .toUriString();
+
         CollectionModel<EntityModel<CategoryDTO>> collectionModel = CollectionModel.of(
-                categoryModels, linkTo(methodOn(CategoryController.class).getAllCategories(categoryName, pageable)).withSelfRel());
+            categoryModels,
+            Link.of(selfLink).withSelfRel()
+        );
+
         PageMetadata pageMetadata = new PageMetadata(
             categories.getNumber(),
             categories.getSize(),
@@ -76,8 +85,16 @@ public class CategoryController {
             bookModels.add(model);
         }
 
+        // Build self link from actual request URL to avoid HATEOAS generating a URL template
+        String selfLink = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .toUriString();
+
         CollectionModel<EntityModel<BookDTO>> collectionModel = CollectionModel.of(
-                bookModels,linkTo(methodOn(CategoryController.class).getAllBooksInCategory(id, pageable)).withSelfRel());
+            bookModels,
+            Link.of(selfLink).withSelfRel()
+        );
+
         PageMetadata pageMetadata = new PageMetadata(
             books.getNumber(),
             books.getSize(),

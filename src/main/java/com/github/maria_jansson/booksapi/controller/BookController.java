@@ -12,6 +12,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.hateoas.Link;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -45,8 +46,16 @@ public class BookController {
             bookModels.add(model);
         }
 
+        // Build self link from actual request URL to avoid HATEOAS generating a URL template
+        String selfLink = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .toUriString();
+
         CollectionModel<EntityModel<BookDTO>> collectionModel = CollectionModel.of(
-                bookModels,linkTo(methodOn(BookController.class).getAllBooks(authorName, categoryName, pageable)).withSelfRel());
+            bookModels,
+            Link.of(selfLink).withSelfRel()
+        );
+
         PageMetadata pageMetadata = new PageMetadata(
             books.getNumber(),
             books.getSize(),

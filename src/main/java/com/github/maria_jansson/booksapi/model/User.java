@@ -1,20 +1,19 @@
 package com.github.maria_jansson.booksapi.model;
 
+
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
+@Table(name = "users")
 @Getter
 @Setter
 @Entity
-public class Author {
+public class User {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(columnDefinition = "TEXT")
-    private String name;
-    @ManyToMany(mappedBy = "authors")
-    private List<Book> books;
+    private String username;
+    private String password;
 }

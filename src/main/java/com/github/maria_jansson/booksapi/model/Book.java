@@ -1,7 +1,5 @@
 package com.github.maria_jansson.booksapi.model;
 
-import com.github.maria_jansson.booksapi.dto.AuthorDTO;
-import com.github.maria_jansson.booksapi.dto.CategoryDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,9 +13,11 @@ public class Book {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(columnDefinition = "TEXT")
     private String title;
     @ManyToMany
     private List<Author> authors;
+    @Column(columnDefinition = "TEXT")
     private String description;
     @ManyToMany
     private List<Category> categories;
@@ -25,5 +25,4 @@ public class Book {
     private double price;
     private String publishMonth;
     private int publishYear;
-
 }

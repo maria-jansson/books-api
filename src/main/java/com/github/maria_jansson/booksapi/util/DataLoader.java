@@ -1,4 +1,4 @@
-package com.github.maria_jansson.booksapi.config;
+package com.github.maria_jansson.booksapi.util;
 
 import com.github.maria_jansson.booksapi.model.Author;
 import com.github.maria_jansson.booksapi.model.Book;

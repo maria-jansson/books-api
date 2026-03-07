@@ -1,9 +1,6 @@
 package com.github.maria_jansson.booksapi.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +14,6 @@ public class Category {
     @GeneratedValue
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "category")
+    @ManyToMany(mappedBy = "categories")
     private List<Book> books;
 }
