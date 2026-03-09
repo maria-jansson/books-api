@@ -105,8 +105,8 @@ public class BookController {
     }
 
     private void addLinksToModel(Long id, EntityModel<BookDTO> model) {
-        model.add(linkTo(methodOn(BookController.class).getOneBook(id)).withSelfRel());
-        model.add(linkTo(methodOn(BookController.class).updateBook(id, null)).withRel("update"));
-        model.add(linkTo(methodOn(BookController.class).deleteBook(id)).withRel("delete"));
+        model.add(linkTo(methodOn(BookController.class).getOneBook(id)).withSelfRel().withType("GET"));
+        model.add(linkTo(methodOn(BookController.class).updateBook(id, null)).withRel("update").withType("PUT"));
+        model.add(linkTo(methodOn(BookController.class).deleteBook(id)).withRel("delete").withType("DELETE"));
     }
 }
