@@ -5,6 +5,7 @@ import com.github.maria_jansson.booksapi.dto.BookRequestDTO;
 import com.github.maria_jansson.booksapi.dto.PageMetadata;
 import com.github.maria_jansson.booksapi.dto.PagedResponse;
 import com.github.maria_jansson.booksapi.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
@@ -75,7 +76,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<EntityModel<BookDTO>> createBook(@RequestBody BookRequestDTO data) {
+    public ResponseEntity<EntityModel<BookDTO>> createBook(@Valid @RequestBody BookRequestDTO data) {
         BookDTO createdBook = bookService.createBook(data);
         EntityModel<BookDTO> model = EntityModel.of(createdBook);
         Long id = createdBook.id();
@@ -91,7 +92,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EntityModel<BookDTO>> updateBook(@PathVariable Long id, @RequestBody BookRequestDTO data) {
+    public ResponseEntity<EntityModel<BookDTO>> updateBook(@PathVariable Long id, @Valid @RequestBody BookRequestDTO data) {
         BookDTO updatedBook = bookService.updateBook(id, data);
         EntityModel<BookDTO> model = EntityModel.of(updatedBook);
         addLinksToModel(id, model);
