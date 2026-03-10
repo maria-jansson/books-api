@@ -6,6 +6,7 @@ import com.github.maria_jansson.booksapi.dto.PageMetadata;
 import com.github.maria_jansson.booksapi.dto.PagedResponse;
 import com.github.maria_jansson.booksapi.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -42,7 +43,7 @@ public class BookController {
     @Operation(summary = "Get all books", description = "Returns a paginated list of books. Filter by authorName or categoryName.")
     @GetMapping
     @ApiResponse(responseCode = "200", description = "Returns paginated list of books")
-    public ResponseEntity<PagedResponse<EntityModel<BookDTO>>> getAllBooks(@RequestParam Optional<String> authorName, @RequestParam Optional<String> categoryName, Pageable pageable) {
+    public ResponseEntity<PagedResponse<EntityModel<BookDTO>>> getAllBooks(@RequestParam Optional<String> authorName, @RequestParam Optional<String> categoryName, @Parameter(hidden = true) Pageable pageable) {
         Page<BookDTO> books = bookService.getAllBooks(authorName, categoryName, pageable);
         List<EntityModel<BookDTO>> bookModels = new ArrayList<>();
 

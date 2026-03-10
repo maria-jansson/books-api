@@ -6,6 +6,7 @@ import com.github.maria_jansson.booksapi.dto.PageMetadata;
 import com.github.maria_jansson.booksapi.dto.PagedResponse;
 import com.github.maria_jansson.booksapi.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,7 +52,7 @@ public class CategoryController {
     @Operation(summary = "Get all categories", description = "Returns a paginated list of categories. Filter by categoryName.")
     @GetMapping
     @ApiResponse(responseCode = "200", description = "Returns paginated list of categories")
-    public ResponseEntity<PagedResponse<EntityModel<CategoryDTO>>> getAllCategories(@RequestParam Optional<String> categoryName, Pageable pageable) {
+    public ResponseEntity<PagedResponse<EntityModel<CategoryDTO>>> getAllCategories(@RequestParam Optional<String> categoryName, @Parameter(hidden = true) Pageable pageable) {
         Page<CategoryDTO> categories = categoryService.getAllCategories(categoryName, pageable);
         List<EntityModel<CategoryDTO>> categoryModels = new ArrayList<>();
 
@@ -85,7 +86,7 @@ public class CategoryController {
     @GetMapping("/{id}/books")
     @ApiResponse(responseCode = "200", description = "Returns books in category")
     @ApiResponse(responseCode = "404", description = "Category not found")
-    public ResponseEntity<PagedResponse<EntityModel<BookDTO>>> getAllBooksInCategory(@PathVariable Long id, Pageable pageable) {
+    public ResponseEntity<PagedResponse<EntityModel<BookDTO>>> getAllBooksInCategory(@PathVariable Long id, @Parameter(hidden = true) Pageable pageable) {
         Page<BookDTO> books = categoryService.getBooksByCategory(id, pageable);
         List<EntityModel<BookDTO>> bookModels = new ArrayList<>();
 

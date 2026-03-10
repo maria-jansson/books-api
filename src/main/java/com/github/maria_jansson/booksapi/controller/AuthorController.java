@@ -7,6 +7,7 @@ import com.github.maria_jansson.booksapi.dto.PageMetadata;
 import com.github.maria_jansson.booksapi.dto.PagedResponse;
 import com.github.maria_jansson.booksapi.service.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +53,7 @@ public class AuthorController {
     @Operation(summary = "Get all authors", description = "Returns a paginated list of authors. Filter by authorName.")
     @GetMapping
     @ApiResponse(responseCode = "200", description = "Returns paginated list of authors")
-    public ResponseEntity<PagedResponse<EntityModel<AuthorDTO>>> getAllAuthors(@RequestParam Optional<String> authorName, Pageable pageable) {
+    public ResponseEntity<PagedResponse<EntityModel<AuthorDTO>>> getAllAuthors(@RequestParam Optional<String> authorName, @Parameter(hidden = true) Pageable pageable) {
         Page<AuthorDTO> authors = authorService.getAllAuthors(authorName, pageable);
         List<EntityModel<AuthorDTO>> authorModels = new ArrayList<>();
 
@@ -86,7 +87,7 @@ public class AuthorController {
     @GetMapping("/{id}/books")
     @ApiResponse(responseCode = "200", description = "Returns books by author")
     @ApiResponse(responseCode = "404", description = "Author not found")
-    public ResponseEntity<PagedResponse<EntityModel<BookDTO>>> getAllBooksByAuthor(@PathVariable Long id, Pageable pageable) {
+    public ResponseEntity<PagedResponse<EntityModel<BookDTO>>> getAllBooksByAuthor(@PathVariable Long id, @Parameter(hidden = true) Pageable pageable) {
         Page<BookDTO> books = authorService.getBooksByAuthor(id, pageable);
         List<EntityModel<BookDTO>> bookModels = new ArrayList<>();
 
