@@ -25,10 +25,12 @@ import java.time.LocalDateTime;
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
+    private final ObjectMapper objectMapper;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, UserDetailsService userDetailsService) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, UserDetailsService userDetailsService, ObjectMapper objectMapper) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.userDetailsService = userDetailsService;
+        this.objectMapper = objectMapper;
     }
 
     @Bean
@@ -53,12 +55,10 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
-                            ObjectMapper mapper = new ObjectMapper();
-
                             ErrorResponse error = new ErrorResponse(401, "Authentication required", LocalDateTime.now());
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType("application/json");
-                            mapper.writeValue(response.getWriter(), error);
+                            objectMapper.writeValue(response.getWriter(), error);
                         })
                 )
                 .authenticationProvider(authenticationProvider())
