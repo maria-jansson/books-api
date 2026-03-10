@@ -54,10 +54,8 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
                             ObjectMapper mapper = new ObjectMapper();
-                            mapper.registerModule(new JavaTimeModule());
 
                             ErrorResponse error = new ErrorResponse(401, "Authentication required", LocalDateTime.now());
-
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType("application/json");
                             mapper.writeValue(response.getWriter(), error);
