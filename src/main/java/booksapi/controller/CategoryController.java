@@ -1,11 +1,19 @@
 package booksapi.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import booksapi.dto.BookDTO;
 import booksapi.dto.CategoryDTO;
 import booksapi.dto.PageMetadata;
 import booksapi.dto.PagedResponse;
 import booksapi.service.CategoryService;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
@@ -19,30 +27,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 /**
- * REST controller for category resources.
- * Exposes read-only endpoints for retrieving categories.
+ * REST controller for managing categories.
+ * Provides endpoints for retrieving category resources.
  */
 @RestController
 @RequestMapping(value = "/api/v1/categories", produces = "application/json")
 public class CategoryController {
   private final CategoryService categoryService;
 
+  /**
+   * Constructs a CategoryController with the given CategoryService.
+   *
+   * @param categoryService the service handling category logic
+   */
   public CategoryController(CategoryService categoryService) {
     this.categoryService = categoryService;
   }
 
+  /**
+   * Returns a single category by ID with HATEOAS links.
+   *
+   * @param id the ID of the category to retrieve
+   * @return the category with self and books links
+   */
   @Operation(summary = "Get category by ID",
           description = "Returns a single category with HATEOAS links.")
   @GetMapping("/{id}")
@@ -58,6 +66,13 @@ public class CategoryController {
     return ResponseEntity.ok(model);
   }
 
+  /**
+   * Returns a paginated list of categories, optionally filtered by name.
+   *
+   * @param categoryName optional filter for category name
+   * @param pageable pagination parameters
+   * @return a paginated response containing category models with HATEOAS links
+   */
   @Operation(summary = "Get all categories",
           description = "Returns a paginated list of categories. Filter by categoryName.")
   @GetMapping
@@ -95,6 +110,13 @@ public class CategoryController {
     return ResponseEntity.ok(new PagedResponse<>(collectionModel, pageMetadata));
   }
 
+  /**
+   * Returns a paginated list of books in the specified category.
+   *
+   * @param id the ID of the category
+   * @param pageable pagination parameters
+   * @return a paginated response containing book models with HATEOAS links
+   */
   @Operation(summary = "Get books in category",
           description = "Returns a paginated list of books in the specified category.")
   @GetMapping("/{id}/books")

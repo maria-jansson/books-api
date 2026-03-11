@@ -5,6 +5,4 @@
 <suppressions>
   <!-- DTO is a well-known abbreviation in Java -->
   <suppress checks="AbbreviationAsWordInName" files=".*"/>
-  <!-- IntelliJ overrides Google checkstyle regarding imports for me for some reason -->
-  <suppress checks="CustomImportOrder" files=".*"/>
 </suppressions>

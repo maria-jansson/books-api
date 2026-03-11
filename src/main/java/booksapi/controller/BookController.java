@@ -1,12 +1,23 @@
 package booksapi.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import booksapi.dto.AuthorDTO;
 import booksapi.dto.BookDTO;
 import booksapi.dto.BookRequestDTO;
 import booksapi.dto.PageMetadata;
 import booksapi.dto.PagedResponse;
 import booksapi.service.BookService;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
@@ -24,20 +35,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 /**
  * REST controller for managing books.
  * Provides endpoints for CRUD operations on book resources.
@@ -47,10 +44,23 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class BookController {
   private final BookService bookService;
 
+  /**
+   * Constructs a BookController with the given BookService.
+   *
+   * @param bookService the service handling book logic
+   */
   public BookController(BookService bookService) {
     this.bookService = bookService;
   }
 
+  /**
+   * Returns a paginated list of books, optionally filtered by author or category name.
+   *
+   * @param authorName optional filter for author name
+   * @param categoryName optional filter for category name
+   * @param pageable pagination parameters
+   * @return a paginated response containing book models with HATEOAS links
+   */
   @Operation(summary = "Get all books",
           description = "Returns a paginated list of books. Filter by authorName or categoryName.")
   @GetMapping
@@ -88,6 +98,12 @@ public class BookController {
     return ResponseEntity.ok(new PagedResponse<>(collectionModel, pageMetadata));
   }
 
+  /**
+   * Returns a single book by ID with HATEOAS links.
+   *
+   * @param id the ID of the book to retrieve
+   * @return the book with self, update, delete and author links
+   */
   @Operation(summary = "Get book by ID",
           description = "Returns a single book with HATEOAS links.")
   @GetMapping("/{id}")
@@ -100,6 +116,12 @@ public class BookController {
     return ResponseEntity.ok(model);
   }
 
+  /**
+   * Creates a new book and returns it with HATEOAS links.
+   *
+   * @param data the request body containing book details
+   * @return the created book with its location header set
+   */
   @Operation(summary = "Create a book",
           description = "Creates a new book. Requires JWT authentication.")
   @SecurityRequirement(name = "Bearer Authentication")
@@ -122,6 +144,13 @@ public class BookController {
     return ResponseEntity.created(location).body(model);
   }
 
+  /**
+   * Updates an existing book by ID and returns the updated book.
+   *
+   * @param id the ID of the book to update
+   * @param data the request body containing updated book details
+   * @return the updated book with HATEOAS links
+   */
   @Operation(summary = "Update a book",
           description = "Updates an existing book by ID. Requires JWT authentication.")
   @SecurityRequirement(name = "Bearer Authentication")
@@ -139,6 +168,12 @@ public class BookController {
     return ResponseEntity.ok(model);
   }
 
+  /**
+   * Deletes a book by ID.
+   *
+   * @param id the ID of the book to delete
+   * @return an empty response with status 204
+   */
   @Operation(summary = "Delete a book",
           description = "Deletes a book by ID. Requires JWT authentication.")
   @SecurityRequirement(name = "Bearer Authentication")
@@ -151,6 +186,12 @@ public class BookController {
     return ResponseEntity.noContent().build();
   }
 
+  /**
+   * Adds HATEOAS links to a book model, including self, update, delete and author links.
+   *
+   * @param id the ID of the book
+   * @param model the EntityModel to add links to
+   */
   private void addLinksToModel(Long id, EntityModel<BookDTO> model) {
     model.add(linkTo(methodOn(BookController.class)
             .getOneBook(id)).withSelfRel().withType("GET"));

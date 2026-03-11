@@ -1,11 +1,22 @@
 package booksapi.dto;
 
-import java.util.List;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import java.util.List;
 
+/**
+ * Data Transfer Object for book creation and update requests.
+ *
+ * @param title the title of the book
+ * @param authorIds the IDs of the authors of the book
+ * @param description a short description of the book
+ * @param categoryIds the IDs of the categories the book belongs to
+ * @param publisher the publisher of the book
+ * @param price the price of the book
+ * @param publishMonth the month the book was published
+ * @param publishYear the year the book was published
+ */
 public record BookRequestDTO(
         @NotBlank(message = "Title is required")
         String title,

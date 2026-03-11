@@ -2,7 +2,8 @@ package booksapi.config;
 
 import booksapi.auth.JwtAuthenticationFilter;
 import booksapi.exception.ErrorResponse;
-
+import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,18 +19,25 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.time.LocalDateTime;
-
-import jakarta.servlet.http.HttpServletResponse;
 import tools.jackson.databind.ObjectMapper;
 
+/**
+ * Security configuration for the application.
+ * Configures JWT authentication, endpoint access rules, and password encoding.
+ */
 @Configuration
 public class SecurityConfig {
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final UserDetailsService userDetailsService;
   private final ObjectMapper objectMapper;
 
+  /**
+   * Constructs a SecurityConfig with the required dependencies.
+   *
+   * @param jwtAuthFilter the filter for JWT token validation
+   * @param userDetailsService the service for loading user details
+   * @param objectMapper the mapper for serializing error responses
+   */
   public SecurityConfig(
           JwtAuthenticationFilter jwtAuthFilter,
           UserDetailsService userDetailsService,
@@ -39,11 +47,23 @@ public class SecurityConfig {
     this.objectMapper = objectMapper;
   }
 
+  /**
+   * Configures the password encoder using BCrypt hashing.
+   *
+   * @return a BCryptPasswordEncoder instance
+   */
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
+  /**
+   * Configures the security filter chain with endpoint access rules,
+   * stateless session management, and JWT authentication.
+   *
+   * @param http the HttpSecurity to configure
+   * @return the configured SecurityFilterChain
+   */
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) {
     http
@@ -83,6 +103,11 @@ public class SecurityConfig {
     return http.build();
   }
 
+  /**
+   * Configures the authentication provider with user details and password encoding.
+   *
+   * @return a DaoAuthenticationProvider instance
+   */
   @Bean
   public AuthenticationProvider authenticationProvider() {
     DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
@@ -90,6 +115,12 @@ public class SecurityConfig {
     return provider;
   }
 
+  /**
+   * Exposes the AuthenticationManager as a Spring bean.
+   *
+   * @param config the authentication configuration
+   * @return the AuthenticationManager
+   */
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
     return config.getAuthenticationManager();
