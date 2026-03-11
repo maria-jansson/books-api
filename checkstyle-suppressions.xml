@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionList Configuration 1.0//EN"
+        "https://checkstyle.org/dtds/suppressions_1_0.dtd">
+<suppressions>
+  <!-- DTO is a well-known abbreviation in Java -->
+  <suppress checks="AbbreviationAsWordInName" files=".*"/>
+  <!-- IntelliJ overrides Google checkstyle regarding imports for me for some reason -->
+  <suppress checks="CustomImportOrder" files=".*"/>
+</suppressions>
