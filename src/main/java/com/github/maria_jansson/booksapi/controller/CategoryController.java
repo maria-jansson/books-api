@@ -45,6 +45,7 @@ public class CategoryController {
         CategoryDTO categoryDTO = categoryService.getOneCategory(id);
         EntityModel<CategoryDTO> model = EntityModel.of(categoryDTO);
         model.add(linkTo(methodOn(CategoryController.class).getOneCategory(id)).withSelfRel());
+        model.add(linkTo(methodOn(CategoryController.class).getAllBooksInCategory(id, Pageable.unpaged())).withRel("books"));
 
         return ResponseEntity.ok(model);
     }

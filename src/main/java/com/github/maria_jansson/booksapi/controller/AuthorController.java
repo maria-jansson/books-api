@@ -46,6 +46,7 @@ public class AuthorController {
         AuthorDTO authorDTO = authorService.getOneAuthor(id);
         EntityModel<AuthorDTO> model = EntityModel.of(authorDTO);
         model.add(linkTo(methodOn(AuthorController.class).getOneAuthor(id)).withSelfRel());
+        model.add(linkTo(methodOn(AuthorController.class).getAllBooksByAuthor(id, Pageable.unpaged())).withRel("books"));
 
         return ResponseEntity.ok(model);
     }

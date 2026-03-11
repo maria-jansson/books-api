@@ -1,9 +1,6 @@
 package com.github.maria_jansson.booksapi.controller;
 
-import com.github.maria_jansson.booksapi.dto.BookDTO;
-import com.github.maria_jansson.booksapi.dto.BookRequestDTO;
-import com.github.maria_jansson.booksapi.dto.PageMetadata;
-import com.github.maria_jansson.booksapi.dto.PagedResponse;
+import com.github.maria_jansson.booksapi.dto.*;
 import com.github.maria_jansson.booksapi.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -134,5 +131,12 @@ public class BookController {
         model.add(linkTo(methodOn(BookController.class).getOneBook(id)).withSelfRel().withType("GET"));
         model.add(linkTo(methodOn(BookController.class).updateBook(id, null)).withRel("update").withType("PUT"));
         model.add(linkTo(methodOn(BookController.class).deleteBook(id)).withRel("delete").withType("DELETE"));
+
+        BookDTO book = model.getContent();
+        if (book.authors() != null) {
+            for (AuthorDTO author : book.authors()) {
+                model.add(linkTo(methodOn(AuthorController.class).getOneAuthor(author.id())).withRel("author"));
+            }
+        }
     }
 }
