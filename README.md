@@ -99,7 +99,11 @@ The ruleset is followed closely, with a deliberate exception documented in
 - **Abbreviations** — `DTO` is a widely accepted Java convention and is exempt from
   Google's abbreviation rules
 
-Beyond automated checks, the code aims to follow clean code principles: meaningful naming, single responsibility, 
+The documentation of the API using Swagger has also had an impact on code quality since the current setup consists of
+several annotations which unfortunately clutter up the code. This was a poor choice made in haste, and due to time
+constraints have not been changed to a more clean way (e.g. a separate .yaml file for Swagger).
+
+Beyond the mentioned exceptions, the code aims to follow clean code principles: meaningful naming, single responsibility,
 and keeping methods focused and readable.
 
 ## Core Technologies Used
