@@ -3,6 +3,7 @@ package booksapi.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -22,6 +23,7 @@ public record BookRequestDTO(
         String title,
         @NotNull(message = "Author IDs are required")
         List<Long> authorIds,
+        @Size(max = 30000, message = "Description cannot exceed 30000 characters")
         String description,
         @NotNull(message = "Category IDs are required")
         List<Long> categoryIds,
