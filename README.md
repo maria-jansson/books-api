@@ -53,7 +53,12 @@ which does not seem to be trusted by Newman by default (or at least it was like 
 The API uses an automated seed script ([DataLoader.java](src/main/java/booksapi/util/DataLoader.java))
 that runs automatically on startup. It loads all books with associated authors and categories from a CSV file 
 into the database.
-The seed script only runs if the database is empty — restarting the application will not duplicate data.
+The seed script only runs if the database is empty — restarting the application will not duplicate data.  
+
+#### *Regarding the database*
+The application uses `ddl-auto: update` which requires the database user to have CREATE and ALTER privileges. 
+In production, best practice would be to use a migration tool such as Flyway with a dedicated migration user, 
+and run the application with a restricted user limited to SELECT, INSERT, UPDATE, and DELETE.
 
 ### Authentication
 
