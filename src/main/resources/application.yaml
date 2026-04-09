@@ -1,9 +1,11 @@
 spring:
+  config:
+    import: optional:file:./.env
   application:
     name: booksapi
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/booksdb}
+    username: ${DB_USERNAME:books_user}
     password: ${DB_PASSWORD}
   jpa:
     hibernate:
@@ -38,4 +40,6 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
-  pageable-to-querystring: true
+#logging:
+#  level:
+#    org.springframework.boot.context.config: TRACE
